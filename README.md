@@ -1,3 +1,12 @@
+================ FORKED ================
+Forked from original code to create a simple game timer for my kids. This will display a simple 45 min count down.
+This code works be there is still alot of left over code that needs to be cleaned up. This forke only needs to have
+ a switch on pin2, no need for a joystick. Also outputs sound on pin 11.
+
+
+
+
+
 [Berlin Hack-And-Tell](http://berlin.hackandtell.org) Count-Down Timer
 ==============================
 [Berlin Hack-And-Tell](http://berlin.hackandtell.org) is a monthly event 

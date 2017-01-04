@@ -19,8 +19,9 @@ TVout TV;
 
 #define menuStart 8 // y coordinate where the menu border starts
 
-int timerDefault = 300;
+int timerDefault = 2700;
 int timerState = timerDefault;
+int rdm = 0;
 
 // byte inByte;
 byte joyval;
@@ -38,35 +39,52 @@ void setup() {
 
   pinMode(LEDPIN, OUTPUT);
 
-  TV.begin(PAL, 120, 96);
+  TV.begin(NTSC, 120, 96);
   TV.select_font(font8x8);
 }
 
 void loop() {
   TV.clear_screen();
-  TV.bitmap(10,0, hntlogo_bmp);
+ // TV.bitmap(10,0, hntlogo_bmp);
+  //TV.delay(500);
+
+  //analogWrite(LEDPIN, 254);
+
+  //TV.delay(500);
+  //analogWrite(LEDPIN, 0);
+  //TV.delay(500);
+
+  //joyval = showMainMenu();
+
+  //if (joyval == 0) {
+ //   timerLoop();
+  //}
+  //else if (joyval == 1) {
+  //  serialLoop();  
+  //}
+ // else if (joyval == 2) {
+ //   pizzaLoop();
+ // }
+ // else if (joyval == 3) {
+ //   logoLoop();
+ // }
+countDown();
+TV.clear_screen();
+TV.delay(500);
+while (checkPin(FIREPIN) == false) 
+{
+  TV.println(0,rdm, "Press Button");
+  TV.println(0,(rdm + 10), " To Start");
   TV.delay(500);
-
-  analogWrite(LEDPIN, 254);
-
-  TV.delay(500);
-  analogWrite(LEDPIN, 0);
-  TV.delay(500);
-
-  joyval = showMainMenu();
-
-  if (joyval == 0) {
-    timerLoop();
+  TV.clear_screen();
+  rdm = rdm + 2;
+  if (rdm > 50)
+  {
+    rdm = 0;
   }
-  else if (joyval == 1) {
-    serialLoop();  
-  }
-  else if (joyval == 2) {
-    pizzaLoop();
-  }
-  else if (joyval == 3) {
-    logoLoop();
-  }
+  
+
+}
 }
 
 void timerLoop() {
@@ -126,34 +144,7 @@ void logoLoop() {
   }
 }
 
-void pizzaLoop() {
-  boolean state = false;
 
-  while (true) {
-    if (!state) {
-      TV.clear_screen();
-      TV.print(0,0, "ENJOY THE FOOD");
-      TV.bitmap(30,20, pizza_bmp);
-    }
-    else {
-      TV.clear_screen();
-      TV.bitmap(10,0, hntlogo_bmp);
-    }
-
-    // wait for 10 second (1000 ms)
-    //unsigned long 
-    now = millis();
-    for(int i = 0; i < 100; i++) {
-
-      while( millis() < (now + 10000)) { 
-        if (checkJoystick() == 1) {
-          return;
-        } 
-      }
-    }
-    state = !state;
-  }
-}
 
 void changeTimeLoop() {
   TV.clear_screen();
@@ -330,12 +321,15 @@ void countDown()
   {
     TV.clear_screen();
     TV.print(20,50, "3");
+    tone(11,2400,3000);
     TV.delay(400);  
     TV.clear_screen();
     TV.print(28,50, "2");
+    tone(11,2400,3000);
     TV.delay(400);
     TV.clear_screen();
     TV.print(36,50, "1");
+    tone(11,2400,3000);
     TV.delay(400);
     TV.clear_screen();
     TV.print(44,50, "GO!");
@@ -360,6 +354,74 @@ void countDown()
     for(int i = 0; i < delaycycles; i++) {
       
       if (checkJoystick() == 1) {
+        TV.clear_screen();
+        TV.print(1,40, "FORCED RESET!!");
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+TV.delay(100);
+tone(11,400,3000);
+TV.delay(100);
+tone(11,2400,3000);
+timerState = timerDefault;
         return;
       } 
       TV.delay(16);
@@ -380,7 +442,7 @@ void countDown()
 
 void showApplause() {
   TV.clear_screen();
-
+  
   TV.bitmap(1, 45, applause_bmp);
 
   int currentLedState = 0;
@@ -388,6 +450,16 @@ void showApplause() {
     if (currentLedState == 0) {
       currentLedState = 255;
       TV.draw_rect(0, 40, 118, 26, WHITE);
+      tone(11,2400,3000);
+TV.delay(100);
+tone(11,1000,3000);
+TV.delay(100);
+tone(11,500,3000);
+TV.delay(100);
+tone(11,1000,3000);
+TV.delay(100);
+tone(11,500,3000);
+
     }
     else {
       currentLedState = 0;
